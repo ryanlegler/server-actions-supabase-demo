@@ -22,27 +22,31 @@ export const revalidate = 0;
 async function getStoredUsers() {
     const { data } = await supabase
         ?.from("users")
-        .select("firstName, lastName, birthday, sex, avatar, id, email");
+        .select("firstName, lastName, birthday, sex, avatar, id, email")
+        .limit(50)
+        .order("id", { ascending: false });
     return data;
 }
 
 function User({ user }: any) {
     return (
-        <div className="flex flex-col items-center justify-center gap-2  border-white rounded-md p-4 border-2">
-            {user.avatar ? (
-                <Image
-                    className="rounded-full"
-                    src={user.avatar}
-                    alt="user avatar"
-                    width={100}
-                    height={100}
-                />
-            ) : null}
-            <div className="flex flex-col items-center justify-center">
-                <span className="text-xl font-bold text-center">
-                    {user.firstName} {user.lastName}
-                </span>
-                <span className="text-l">{user.email}</span>
+        <div className="col-span-1">
+            <div className="flex flex-col items-center justify-center gap-2 border-white rounded-md p-4 border-2">
+                {user.avatar ? (
+                    <Image
+                        className="rounded-full"
+                        src={user.avatar}
+                        alt="user avatar"
+                        width={100}
+                        height={100}
+                    />
+                ) : null}
+                <div className="flex flex-col items-center justify-center">
+                    <span className="text-xl font-bold text-center">
+                        {user.firstName} {user.lastName}
+                    </span>
+                    <span className="text-l">{user.email}</span>
+                </div>
             </div>
         </div>
     );
@@ -60,7 +64,7 @@ export default async function Home() {
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-black text-white">
-            <div className="grid grid-cols-2 gap-4 items-start">
+            <div className="grid grid-cols-5 gap-4 items-start">
                 <div className="flex col-span-1 justify-center flex-col gap-4">
                     <User user={user} />
 
@@ -71,8 +75,8 @@ export default async function Home() {
 
                     <Button onClick={onAction} />
                 </div>
-                <div className="col-span-1 flex flex-col gap-5 flex-wrap">
-                    {users?.reverse()?.map((user: any) => (
+                <div className="col-span-4 grid grid-cols-4 gap-4 ">
+                    {users?.map((user: any) => (
                         <User user={user} key={user.id} />
                     ))}
                 </div>
