@@ -9,10 +9,11 @@ import { Button } from "./Button";
 async function getFakeUser() {
     const user = {
         avatar: faker.image.avatar(),
+        birthday: faker.date.birthdate().toISOString(),
+        email: faker.internet.email(),
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
         sex: faker.name.sexType(),
-        email: faker.internet.email(),
     };
     return user;
 }
@@ -29,26 +30,38 @@ async function getStoredUsers() {
 }
 
 function User({ user }: any) {
+    const { avatar, firstName, email, lastName, sex, birthday } = user;
+
+    console.log("birthday", birthday);
     return (
-        <div className="col-span-1">
-            <div className="flex flex-col items-center justify-center gap-2 border-white rounded-md p-4 border-2">
-                {user.avatar ? (
+        <div className="col-span-1  border-white rounded-md p-4 border-2">
+            <div className="flex flex-col items-center justify-center gap-2 ">
+                {avatar ? (
                     <Image
                         className="rounded-full"
-                        src={user.avatar}
+                        src={avatar}
                         alt="user avatar"
                         width={100}
                         height={100}
                     />
                 ) : null}
-                <div className="flex flex-col items-center justify-center w-full">
+                <div className="flex flex-col items-center justify-center w-full gap-1 ">
                     <span className="sm:text-xl text-m font-bold text-center">
-                        {user.firstName} {user.lastName}
+                        {firstName} {lastName}
                     </span>
-                    <span className="sm:text-l text-xs text-ellipsis w-full overflow-hidden">
-                        {user.email}
+                    <span className="sm:text-l text-xs text-ellipsis max-w-full overflow-hidden">
+                        {email}
                     </span>
+
+                    {birthday ? (
+                        <span className="sm:text-l text-xs text-ellipsis max-w-full overflow-hidden">
+                            {new Date(birthday)?.toLocaleDateString()}
+                        </span>
+                    ) : null}
                 </div>
+                <span className="sm:text-l text-xs text-ellipsis max-w-full overflow-hidden bg-slate-600  px-2 py-1 rounded-md">
+                    {sex}
+                </span>
             </div>
         </div>
     );
