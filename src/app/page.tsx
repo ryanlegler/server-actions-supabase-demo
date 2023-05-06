@@ -4,6 +4,7 @@ import Image from "next/image";
 import { revalidatePath } from "next/cache";
 
 import { cookies } from "next/headers";
+import { Button } from "./Button";
 
 async function getFakeUser() {
     const user = {
@@ -44,7 +45,7 @@ export default async function Home() {
     const users = await getStoredUsers();
     const user = await getFakeUser();
 
-    async function addItem() {
+    async function onAction() {
         "use server";
         await supabase?.from("users").insert(user);
         revalidatePath("/");
@@ -52,21 +53,16 @@ export default async function Home() {
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-black text-white">
-            {/* // two columns  */}
-            <div className="grid grid-cols-2 gap-4">
-                <div className="col-span-1 items-center justify-center">
-                    {/* //user */}
+            <div className="grid grid-cols-2 gap-4 items-start">
+                <div className="flex col-span-1  justify-center flex-col">
                     <User user={user} />
-                    <form className="col-span-1 items-center justify-center">
-                        {/* <input type="text" name="user" placeholder="First Name" value={`${user}`} /> */}
-                        <button
-                            formAction={addItem}
-                            type="submit"
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        >
-                            Save User
-                        </button>
-                    </form>
+
+                    {/* <form action={onAction}>
+                        <input type="text" name="message" placeholder="Post message text" />
+                        <button>Save</button>
+                    </form> */}
+
+                    <Button onClick={onAction} />
                 </div>
                 <div className="col-span-1">
                     {users?.reverse()?.map((user: any) => (
