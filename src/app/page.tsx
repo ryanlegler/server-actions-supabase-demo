@@ -28,15 +28,22 @@ async function getStoredUsers() {
 
 function User({ user }: any) {
     return (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center gap-2  border-white rounded-md p-4 border-2">
             {user.avatar ? (
-                <Image src={user.avatar} alt="user avatar" width={200} height={200} />
+                <Image
+                    className="rounded-full"
+                    src={user.avatar}
+                    alt="user avatar"
+                    width={100}
+                    height={100}
+                />
             ) : null}
-            <h1 className="text-4xl font-bold">
-                {user.firstName} {user.lastName}
-            </h1>
-            <h2 className="text-2xl">{user.email}</h2>
-            <h2 className="text-2xl">{user.sex}</h2>
+            <div className="flex flex-col items-center justify-center">
+                <span className="text-xl font-bold text-center">
+                    {user.firstName} {user.lastName}
+                </span>
+                <span className="text-l">{user.email}</span>
+            </div>
         </div>
     );
 }
@@ -54,7 +61,7 @@ export default async function Home() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-black text-white">
             <div className="grid grid-cols-2 gap-4 items-start">
-                <div className="flex col-span-1  justify-center flex-col">
+                <div className="flex col-span-1 justify-center flex-col gap-4">
                     <User user={user} />
 
                     {/* <form action={onAction}>
@@ -64,7 +71,7 @@ export default async function Home() {
 
                     <Button onClick={onAction} />
                 </div>
-                <div className="col-span-1">
+                <div className="col-span-1 flex flex-col gap-5 flex-wrap">
                     {users?.reverse()?.map((user: any) => (
                         <User user={user} key={user.id} />
                     ))}
